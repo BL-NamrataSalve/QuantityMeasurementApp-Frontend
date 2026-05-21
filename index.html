@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantity Measurement - Pure Frontend Quantity Converter</title>
+    <meta name="description"
+        content="An advanced client-side Quantity Measurement tool powered by local storage and high-end styling.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Header Navigation -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M9 3H5C3.89543 3 3 3.89543 3 5V9C3 10.1046 3.89543 11 5 11H9C10.1046 11 11 10.1046 11 9V5C11 3.89543 10.1046 3 9 3Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M19 13H15C13.8954 13 13 13.8954 13 15V19C13 20.1046 13.8954 21 15 21H19C20.1046 21 21 20.1046 21 19V15C21 13.8954 20.1046 13 19 13Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M19 3H15C13.8954 3 13 3.89543 13 5V9C13 10.1046 13.8954 11 15 11H19C20.1046 11 21 10.1046 21 9V5C21 3.89543 20.1046 3 19 3Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                        d="M9 13H5C3.89543 13 3 13.8954 3 15V19C3 20.1046 3.89543 21 5 21H9C10.1046 21 11 20.1046 11 19V15C11 13.8954 10.1046 13 9 13Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="logo-text">Quantity<span class="gradient-text">Measurement</span></span>
+            </div>
+
+            <nav class="header-nav">
+                <button id="theme-toggle" class="nav-icon-btn" aria-label="Toggle Theme">
+                    <!-- Sun Icon (Light Mode) -->
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" />
+                        <path
+                            d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <!-- Moon Icon (Dark Mode) -->
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div id="user-profile" class="user-profile-menu hidden">
+                    <span class="user-avatar" id="avatar-letters">US</span>
+                    <div class="user-dropdown">
+                        <p class="user-name" id="profile-name">User Name</p>
+                        <p class="user-email" id="profile-email">user@email.com</p>
+                        <hr class="dropdown-divider">
+                        <button id="logout-btn" class="dropdown-item logout-link">
+                            <svg class="logout-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12L16 7M21 12H9"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+        <!-- Authentication Section (Shown when logged out) -->
+        <section id="auth-section" class="auth-section">
+            <div class="auth-card glass-panel">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" id="tab-login">Login</button>
+                    <button class="auth-tab" id="tab-register">Register</button>
+                </div>
+
+                <div id="auth-error" class="error-banner hidden"></div>
+                <div id="auth-success" class="success-banner hidden"></div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active">
+                    <div class="form-group">
+                        <input type="email" id="login-email" required placeholder=" ">
+                        <label for="login-email">Email Address</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="login-password" required placeholder=" ">
+                        <label for="login-password">Password</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        <span>Sign In</span>
+                        <div class="spinner hidden"></div>
+                    </button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <input type="text" id="register-name" required minlength="2" maxlength="50" placeholder=" ">
+                        <label for="register-name">Full Name</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="register-email" required placeholder=" ">
+                        <label for="register-email">Email Address</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="register-password" required minlength="6" placeholder=" ">
+                        <label for="register-password">Password (min 6 chars)</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        <span>Create Account</span>
+                        <div class="spinner hidden"></div>
+                    </button>
+                </form>
+            </div>
+
+            <div class="auth-info-pane">
+                <h1 class="auth-hero-title">Accurate Quantity Conversion <br><span class="gradient-text">Made Purely
+                        Local</span></h1>
+                <p class="auth-hero-desc">Experience real-time dimensional analysis, weight calculations, volume checks,
+                    and thermal scales with our client-side Javascript application engine.</p>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon-wrapper">✓</div>
+                        <div><strong>Multi-category Support</strong>: Length, Weight, Volume, & Temperature.</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-wrapper">✓</div>
+                        <div><strong>Unified Operations</strong>: Add, subtract, divide and compare units instantly.
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-wrapper">✓</div>
+                        <div><strong>Local Logging</strong>: Save, filter and clear your calculations history.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div> <!-- Float clear element -->
+        </section>
+
+        <!-- Dashboard Section (Shown when logged in) -->
+        <section id="dashboard-section" class="dashboard-section hidden">
+
+            <!-- Category Selection Cards -->
+            <div class="section-title-wrapper">
+                <h2 class="section-title">Select Category</h2>
+                <p class="section-subtitle">Choose a physical dimension to begin converting and computing</p>
+            </div>
+
+            <div class="category-grid">
+                <div class="category-card active" data-category="LENGTH">
+                    <div class="category-icon">
+                        <!-- Ruler icon -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M21.3 8.7L8.7 21.3C8.3 21.7 7.7 21.7 7.3 21.3L2.7 16.7C2.3 16.3 2.3 15.7 2.7 15.3L15.3 2.7C15.7 2.3 16.3 2.3 16.7 2.7L21.3 7.3C21.7 7.7 21.7 8.3 21.3 8.7Z" />
+                            <path d="M6 18L8 16M9 15L11 13M12 12L14 10M15 9L17 7" />
+                        </svg>
+                    </div>
+                    <h3 class="category-name">Length</h3>
+                    <p class="category-desc">Feet, Inches, Yards & Centimeters</p>
+                </div>
+
+                <div class="category-card" data-category="WEIGHT">
+                    <div class="category-icon">
+                        <!-- Scale / Weight icon -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" />
+                            <path d="M12 7V3M8 3H16" />
+                            <circle cx="12" cy="14" r="3" />
+                        </svg>
+                    </div>
+                    <h3 class="category-name">Weight</h3>
+                    <p class="category-desc">Grams, Kilograms & Tonnes</p>
+                </div>
+
+                <div class="category-card" data-category="VOLUME">
+                    <div class="category-icon">
+                        <!-- Flask / Beaker icon -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 2H18M8 2V8L4 16C3 18 4.5 21 7 21H17C19.5 21 21 18 20 16L16 8V2" />
+                            <path d="M6 14H18" />
+                        </svg>
+                    </div>
+                    <h3 class="category-name">Volume</h3>
+                    <p class="category-desc">Millilitres, Litres & Gallons</p>
+                </div>
+
+                <div class="category-card" data-category="TEMPERATURE">
+                    <div class="category-icon">
+                        <!-- Thermometer icon -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z" />
+                        </svg>
+                    </div>
+                    <h3 class="category-name">Temperature</h3>
+                    <p class="category-desc">Celsius & Fahrenheit</p>
+                </div>
+            </div>
+
+            <!-- Operations Workspaces Layout -->
+            <div class="workspace-layout">
+
+                <!-- Left panel: Operations (Convert, Arithmetic, Compare) -->
+                <div class="main-workspace-panel">
+
+                    <!-- Tabs for operations -->
+                    <div class="ops-tabs">
+                        <button class="ops-tab active" data-tab="convert">Convert</button>
+                        <button class="ops-tab" data-tab="arithmetic" id="btn-tab-arithmetic">Arithmetic</button>
+                        <button class="ops-tab" data-tab="compare">Compare</button>
+                    </div>
+
+                    <div id="op-error" class="error-banner hidden"></div>
+
+                    <!-- Convert Tab Content -->
+                    <div id="tab-content-convert" class="tab-pane active">
+                        <form id="convert-form" class="op-form">
+                            <div class="fields-row">
+                                <div class="form-group flex-2">
+                                    <input type="number" id="convert-val" required step="any" placeholder=" ">
+                                    <label for="convert-val">Enter Value</label>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <select id="convert-from-unit" class="custom-select"></select>
+                                    <label class="select-label">From Unit</label>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <select id="convert-to-unit" class="custom-select"></select>
+                                    <label class="select-label">To Unit</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-gradient btn-full">
+                                <span>Convert Quantity</span>
+                            </button>
+                        </form>
+                        <div id="convert-result-box" class="result-box hidden">
+                            <p class="result-title">Converted Value</p>
+                            <p class="result-value" id="convert-result-text">0.00</p>
+                        </div>
+                    </div>
+
+                    <!-- Arithmetic Tab Content -->
+                    <div id="tab-content-arithmetic" class="tab-pane">
+                        <div id="arithmetic-warning" class="warning-banner hidden">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                class="alert-icon">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" />
+                            </svg>
+                            <span>Temperature operations do not support arithmetic calculations. Please select Length,
+                                Weight, or Volume.</span>
+                        </div>
+
+                        <form id="arithmetic-form" class="op-form">
+                            <div class="fields-row">
+                                <div class="form-group flex-2">
+                                    <input type="number" id="arithmetic-val1" required step="any" placeholder=" ">
+                                    <label for="arithmetic-val1">First Value</label>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <select id="arithmetic-unit1" class="custom-select"></select>
+                                    <label class="select-label">First Unit</label>
+                                </div>
+                            </div>
+
+                            <div class="operation-selection">
+                                <label class="op-radio-container">
+                                    <input type="radio" name="arithmetic-op" value="ADD" checked>
+                                    <span class="op-radio-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 5v14M5 12h14" />
+                                        </svg>
+                                        Add
+                                    </span>
+                                </label>
+                                <label class="op-radio-container">
+                                    <input type="radio" name="arithmetic-op" value="SUBTRACT">
+                                    <span class="op-radio-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M5 12h14" />
+                                        </svg>
+                                        Subtract
+                                    </span>
+                                </label>
+                                <label class="op-radio-container">
+                                    <input type="radio" name="arithmetic-op" value="DIVIDE">
+                                    <span class="op-radio-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M6 18L18 6" />
+                                        </svg>
+                                        Divide
+                                    </span>
+                                </label>
+                            </div>
+
+                            <div class="fields-row" id="second-quantity-row">
+                                <div class="form-group flex-2">
+                                    <input type="number" id="arithmetic-val2" required step="any" placeholder=" ">
+                                    <label for="arithmetic-val2" id="val2-label">Second Value</label>
+                                </div>
+                                <div class="form-group flex-1" id="second-unit-wrapper">
+                                    <select id="arithmetic-unit2" class="custom-select"></select>
+                                    <label class="select-label">Second Unit</label>
+                                </div>
+                            </div>
+
+                            <div class="fields-row" id="target-unit-row">
+                                <div class="form-group flex-1">
+                                    <select id="arithmetic-target-unit" class="custom-select"></select>
+                                    <label class="select-label">Target Unit</label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-gradient btn-full">
+                                <span>Calculate</span>
+                            </button>
+                        </form>
+
+                        <div id="arithmetic-result-box" class="result-box hidden">
+                            <p class="result-title">Calculation Result</p>
+                            <p class="result-value" id="arithmetic-result-text">0.00</p>
+                        </div>
+                    </div>
+
+                    <!-- Compare Tab Content -->
+                    <div id="tab-content-compare" class="tab-pane">
+                        <form id="compare-form" class="op-form">
+                            <div class="fields-row">
+                                <div class="form-group flex-2">
+                                    <input type="number" id="compare-val1" required step="any" placeholder=" ">
+                                    <label for="compare-val1">First Value</label>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <select id="compare-unit1" class="custom-select"></select>
+                                    <label class="select-label">First Unit</label>
+                                </div>
+                            </div>
+
+                            <div class="compare-divider">
+                                <span>VS</span>
+                            </div>
+
+                            <div class="fields-row">
+                                <div class="form-group flex-2">
+                                    <input type="number" id="compare-val2" required step="any" placeholder=" ">
+                                    <label for="compare-val2">Second Value</label>
+                                </div>
+                                <div class="form-group flex-1">
+                                    <select id="compare-unit2" class="custom-select"></select>
+                                    <label class="select-label">Second Unit</label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-gradient btn-full">
+                                <span>Compare Quantities</span>
+                            </button>
+                        </form>
+
+                        <div id="compare-result-box" class="result-box hidden">
+                            <p class="result-title">Comparison Result</p>
+                            <div class="comparison-status" id="compare-status-badge">
+                                <span class="badge-text">EQUAL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right floated sidebar for statistics and tips -->
+                <aside class="right-info-sidebar">
+                    <div class="sidebar-widget glass-panel">
+                        <h3>Measurement Conversion Facts</h3>
+                        <ul class="facts-list">
+                            <li><strong>Length:</strong> 1 Foot = 12 Inches, 1 Yard = 36 Inches = 3 Feet, 1 Inch = 2.54
+                                Centimeters.</li>
+                            <li><strong>Weight:</strong> 1 Kilogram = 1000 Grams, 1 Tonne = 1000 Kilograms.</li>
+                            <li><strong>Volume:</strong> 1 Gallon = 3.78541 Litres, 1 Litre = 1000 Millilitres.</li>
+                            <li><strong>Temperature:</strong> Non-linear conversion. [°F] = [°C] × 9/5 + 32.</li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-widget glass-panel">
+                        <h3>Account Activity Stats</h3>
+                        <div class="stats-row">
+                            <div class="stat-card">
+                                <span class="stat-number" id="stat-converts">0</span>
+                                <span class="stat-label">Converts</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-number" id="stat-ops">0</span>
+                                <span class="stat-label">Calculations</span>
+                            </div>
+                        </div>
+                        <p class="stat-helper">Your history is securely cached in local storage.</p>
+                    </div>
+                </aside>
+
+                <div class="clear"></div> <!-- CSS Float Clear -->
+            </div>
+
+            <!-- History Section -->
+            <section class="history-section glass-panel">
+                <div class="history-header">
+                    <div>
+                        <h3 class="history-title">Operation Logs</h3>
+                        <p class="history-subtitle">Showing latest records from local browser database</p>
+                    </div>
+                    <div class="history-actions">
+                        <select id="history-filter" class="custom-select filter-select">
+                            <option value="ALL">All Operations</option>
+                            <option value="CONVERSION">Conversions</option>
+                            <option value="ADDITION">Additions</option>
+                            <option value="SUBTRACTION">Subtractions</option>
+                            <option value="DIVISION">Divisions</option>
+                            <option value="COMPARISON">Comparisons</option>
+                        </select>
+                        <button id="btn-clear-history" class="btn btn-secondary danger-hover">
+                            Clear History
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="history-table" id="history-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Operation</th>
+                                <th>First Quantity</th>
+                                <th>Second Quantity / Target</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <tr>
+                                <td colspan="5" class="table-empty">No history logs found. Perform some operations to
+                                    get started.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>&copy; 2026 Quantity Measurement. Pure Frontend Client-Side System. All rights reserved.</p>
+    </footer>
+
+    <!-- App JavaScript Modules (Loaded Sequentially) -->
+    <script src="js/auth.js?v=1.0.1"></script>
+    <script src="js/converter.js?v=1.0.1"></script>
+    <script src="js/history.js?v=1.0.1"></script>
+    <script src="js/app.js?v=1.0.1"></script>
+</body>
+
+</html>

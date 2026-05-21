@@ -1,0 +1,146 @@
+{
+  "users": [
+    {
+      "name": "Node Storage",
+      "email": "server_tester2@example.com",
+      "password": "password123"
+    },
+    {
+      "name": "Final Tester",
+      "email": "tester_final@example.com",
+      "password": "password123"
+    },
+    {
+      "name": "Console Tester",
+      "email": "console@example.com",
+      "password": "password123"
+    },
+    {
+      "name": "AAA",
+      "email": "aaa@gmail.com",
+      "password": "123456"
+    }
+  ],
+  "logs": [
+    {
+      "id": "1779360047995r7j9b",
+      "userEmail": "server_tester2@example.com",
+      "timestamp": "2026-05-21T10:40:47.995Z",
+      "operationType": "CONVERSION",
+      "firstQuantityValue": 5,
+      "firstUnit": "KILOGRAM",
+      "secondQuantityValue": 0,
+      "secondUnit": "GRAM",
+      "resultQuantityValue": 5000,
+      "resultUnit": "GRAM"
+    },
+    {
+      "id": "1779360094327nuhxw",
+      "userEmail": "server_tester2@example.com",
+      "timestamp": "2026-05-21T10:41:34.327Z",
+      "operationType": "ADDITION",
+      "firstQuantityValue": 1,
+      "firstUnit": "KILOGRAM",
+      "secondQuantityValue": 500,
+      "secondUnit": "GRAM",
+      "resultQuantityValue": 1500,
+      "resultUnit": "GRAM"
+    },
+    {
+      "id": "1779360439694rjttx",
+      "userEmail": "tester_final@example.com",
+      "timestamp": "2026-05-21T10:47:19.694Z",
+      "operationType": "CONVERSION",
+      "firstQuantityValue": 10,
+      "firstUnit": "INCH",
+      "secondQuantityValue": 0,
+      "secondUnit": "CENTIMETER",
+      "resultQuantityValue": 25.4,
+      "resultUnit": "CENTIMETER"
+    },
+    {
+      "id": "17793604936722ssat",
+      "userEmail": "tester_final@example.com",
+      "timestamp": "2026-05-21T10:48:13.672Z",
+      "operationType": "ADDITION",
+      "firstQuantityValue": 2,
+      "firstUnit": "FEET",
+      "secondQuantityValue": 10,
+      "secondUnit": "INCH",
+      "resultQuantityValue": 86.36,
+      "resultUnit": "CENTIMETER"
+    },
+    {
+      "id": "1779360516763xtgx1",
+      "userEmail": "tester_final@example.com",
+      "timestamp": "2026-05-21T10:48:36.763Z",
+      "operationType": "ADDITION",
+      "firstQuantityValue": 5,
+      "firstUnit": "FEET",
+      "secondQuantityValue": 10,
+      "secondUnit": "INCH",
+      "resultQuantityValue": 177.8,
+      "resultUnit": "CENTIMETER"
+    },
+    {
+      "id": "17793605478047dlst",
+      "userEmail": "tester_final@example.com",
+      "timestamp": "2026-05-21T10:49:07.804Z",
+      "operationType": "COMPARISON",
+      "firstQuantityValue": 1,
+      "firstUnit": "FEET",
+      "secondQuantityValue": 12,
+      "secondUnit": "INCH",
+      "resultQuantityValue": 1,
+      "resultUnit": "EQUAL"
+    },
+    {
+      "id": "1779361949961bsmny",
+      "userEmail": "aaa@gmail.com",
+      "timestamp": "2026-05-21T11:12:29.961Z",
+      "operationType": "ADDITION",
+      "firstQuantityValue": 2000,
+      "firstUnit": "GRAM",
+      "secondQuantityValue": 3998,
+      "secondUnit": "KILOGRAM",
+      "resultQuantityValue": 4000000,
+      "resultUnit": "GRAM"
+    },
+    {
+      "id": "177936196377816z9w",
+      "userEmail": "aaa@gmail.com",
+      "timestamp": "2026-05-21T11:12:43.778Z",
+      "operationType": "ADDITION",
+      "firstQuantityValue": 2000,
+      "firstUnit": "GRAM",
+      "secondQuantityValue": 3998,
+      "secondUnit": "GRAM",
+      "resultQuantityValue": 5998,
+      "resultUnit": "GRAM"
+    },
+    {
+      "id": "1779361972723uq1vn",
+      "userEmail": "aaa@gmail.com",
+      "timestamp": "2026-05-21T11:12:52.723Z",
+      "operationType": "ADDITION",
+      "firstQuantityValue": 2000,
+      "firstUnit": "GRAM",
+      "secondQuantityValue": 3000,
+      "secondUnit": "GRAM",
+      "resultQuantityValue": 5000,
+      "resultUnit": "GRAM"
+    },
+    {
+      "id": "17793619838205k9hx",
+      "userEmail": "aaa@gmail.com",
+      "timestamp": "2026-05-21T11:13:03.820Z",
+      "operationType": "ADDITION",
+      "firstQuantityValue": 2000,
+      "firstUnit": "GRAM",
+      "secondQuantityValue": 3,
+      "secondUnit": "KILOGRAM",
+      "resultQuantityValue": 5000,
+      "resultUnit": "GRAM"
+    }
+  ]
+}
