@@ -1,0 +1,185 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Auth from './components/Auth';
+import Header from './components/Header';
+import Converter from './components/Converter';
+import Calculator from './components/Calculator';
+import HistoryList from './components/HistoryList';
+
+function App() {
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [user, setUser] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('LENGTH');
+  const [activeTab, setActiveTab] = useState('CONVERTER');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  // Capture OAuth2 redirect parameters on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlToken = params.get('token');
+    if (window.location.pathname.startsWith('/oauth2/redirect') && urlToken) {
+      localStorage.setItem('token', urlToken);
+      setToken(urlToken);
+      window.history.replaceState({}, document.title, "/");
+    }
+  }, []);
+
+  // Sync user profile from localStorage or fetch from backend if empty
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {
+        localStorage.removeItem('user');
+      }
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token && !user) {
+      const fetchProfile = async () => {
+        try {
+          const response = await axios.get('/auth/api/v1/auth/me', {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          const profileData = response.data;
+          const userObj = {
+            name: profileData.name,
+            email: profileData.email,
+            role: profileData.role
+          };
+          localStorage.setItem('user', JSON.stringify(userObj));
+          setUser(userObj);
+        } catch (e) {
+          console.error("Failed to fetch user profile", e);
+          handleLogout();
+        }
+      };
+      fetchProfile();
+    }
+  }, [token, user]);
+
+  const handleAuthSuccess = (newToken, authResponse) => {
+    setToken(newToken);
+    setUser({
+      name: authResponse.name,
+      email: authResponse.email,
+      role: authResponse.role
+    });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setToken(null);
+    setUser(null);
+  };
+
+  const handleOperationCompleted = () => {
+    // Increment to trigger a reload of the History list component
+    setRefreshTrigger(prev => prev + 1);
+  };
+
+  if (!token) {
+    return (
+      <div className="animated-fadeIn" style={{ display: 'flex', alignItems: 'center', minHeight: '80vh' }}>
+        <Auth onAuthSuccess={handleAuthSuccess} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="animated-fadeIn" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <Header user={user} onLogout={handleLogout} />
+
+      <div className="dashboard-container">
+        {/* Sidebar navigation */}
+        <aside className="glass-panel category-sidebar animated-fadeIn">
+          <div className="sidebar-title">Categories</div>
+          
+          <button 
+            className={`category-btn ${activeCategory === 'LENGTH' ? 'active' : ''}`}
+            onClick={() => { setActiveCategory('LENGTH'); }}
+            type="button"
+          >
+            📏 Length
+          </button>
+          
+          <button 
+            className={`category-btn ${activeCategory === 'VOLUME' ? 'active' : ''}`}
+            onClick={() => { setActiveCategory('VOLUME'); }}
+            type="button"
+          >
+            🧪 Volume
+          </button>
+          
+          <button 
+            className={`category-btn ${activeCategory === 'WEIGHT' ? 'active' : ''}`}
+            onClick={() => { setActiveCategory('WEIGHT'); }}
+            type="button"
+          >
+            ⚖️ Weight
+          </button>
+          
+          <button 
+            className={`category-btn ${activeCategory === 'TEMPERATURE' ? 'active' : ''}`}
+            onClick={() => { setActiveCategory('TEMPERATURE'); }}
+            type="button"
+          >
+            🌡️ Temperature
+          </button>
+        </aside>
+
+        {/* Work Area */}
+        <main className="operations-area">
+          <div className="operations-tabs">
+            <button 
+              className={`op-tab-btn ${activeTab === 'CONVERTER' ? 'active' : ''}`}
+              onClick={() => setActiveTab('CONVERTER')}
+              type="button"
+            >
+              Unit Converter
+            </button>
+            <button 
+              className={`op-tab-btn ${activeTab === 'CALCULATOR' ? 'active' : ''} ${activeCategory === 'TEMPERATURE' ? 'disabled' : ''}`}
+              onClick={() => {
+                if (activeCategory !== 'TEMPERATURE') {
+                  setActiveTab('CALCULATOR');
+                }
+              }}
+              title={activeCategory === 'TEMPERATURE' ? 'Arithmetic is not supported for Temperature' : ''}
+              type="button"
+            >
+              Arithmetic & Compare
+            </button>
+          </div>
+
+          {activeTab === 'CONVERTER' ? (
+            <Converter 
+              category={activeCategory} 
+              token={token} 
+              onOperationCompleted={handleOperationCompleted} 
+            />
+          ) : (
+            <Calculator 
+              category={activeCategory} 
+              token={token} 
+              onOperationCompleted={handleOperationCompleted} 
+            />
+          )}
+        </main>
+      </div>
+
+      <HistoryList token={token} refreshTrigger={refreshTrigger} />
+
+      <footer className="footer">
+        <p>&copy; {new Date().getFullYear()} QuantityManagement Systems. All rights reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+export default App;
