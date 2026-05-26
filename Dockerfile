@@ -28,7 +28,7 @@ ENV CONVERSION_SERVICE_URL="http://localhost:8080"
 
 # Specify which environment variables to replace in nginx.conf.template
 # This prevents Nginx internal variables (like $uri, $host) from being cleared by envsubst
-ENV NGINX_ENVSUBST_FILTER="AUTH_SERVICE_URL CONVERSION_SERVICE_URL"
+ENV NGINX_ENVSUBST_FILTER="AUTH_SERVICE_URL|CONVERSION_SERVICE_URL"
 
 # Expose HTTP port
 EXPOSE 80
