@@ -22,6 +22,10 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Copy custom Nginx configuration template
 COPY nginx.conf.template /etc/nginx/templates/default.conf.template
 
+# Specify default environment variables so Nginx doesn't crash if they are not set on Render
+ENV AUTH_SERVICE_URL="http://localhost:8081"
+ENV CONVERSION_SERVICE_URL="http://localhost:8080"
+
 # Specify which environment variables to replace in nginx.conf.template
 # This prevents Nginx internal variables (like $uri, $host) from being cleared by envsubst
 ENV NGINX_ENVSUBST_FILTER="AUTH_SERVICE_URL CONVERSION_SERVICE_URL"
