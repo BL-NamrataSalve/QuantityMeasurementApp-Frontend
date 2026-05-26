@@ -1,0 +1,30 @@
+server {
+    listen 80;
+    server_name localhost;
+
+    # Serve static frontend files
+    location / {
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Proxy authentication API requests to Auth Service (and strip /auth prefix)
+    location /auth/ {
+        rewrite ^/auth/(.*) /$1 break;
+        proxy_pass ${AUTH_SERVICE_URL};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # Proxy conversion API requests to Conversion Service / API Gateway (keep /conversion prefix)
+    location /conversion/ {
+        proxy_pass ${CONVERSION_SERVICE_URL};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
