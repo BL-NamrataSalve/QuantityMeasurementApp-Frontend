@@ -7,17 +7,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
-      proxy: {
-        '/auth': {
-          target: env.AUTH_SERVICE_URL || 'http://localhost:8081',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/auth/, ''),
-        },
-        '/conversion': {
-          target: env.CONVERSION_SERVICE_URL || 'http://localhost:8080',
-          changeOrigin: true,
-        }
-      }
+      // Proxy removed: all requests now go directly to VITE_API_GATEWAY_URL
     }
   };
 })

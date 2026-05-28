@@ -95,7 +95,7 @@ export default function Auth({ onAuthSuccess }) {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = '/auth/oauth2/authorization/google';
+    window.location.href = import.meta.env.VITE_API_GATEWAY_URL + '/auth/oauth2/authorization/google';
   };
 
   return (
