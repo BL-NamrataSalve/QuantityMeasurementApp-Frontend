@@ -61,6 +61,9 @@ export default function Auth({ onAuthSuccess }) {
         
         // Save auth data in localStorage
         localStorage.setItem('token', data.token);
+        if (data.refreshToken) {
+          localStorage.setItem('refreshToken', data.refreshToken);
+        }
         localStorage.setItem('user', JSON.stringify({
           name: data.name || name || email.split('@')[0],
           email: data.email || email,
