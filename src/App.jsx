@@ -44,6 +44,34 @@ function App() {
     }
   }, [token]);
 
+  // Proactive Token Refresh Timer (runs every 55 seconds before 60-second expiration)
+  useEffect(() => {
+    if (!token || !refreshToken) return;
+
+    const refreshInterval = setInterval(async () => {
+      try {
+        logger.info('Proactively refreshing access token...');
+        const response = await axios.post('/auth/api/v1/auth/refresh', {
+          refreshToken: refreshToken
+        });
+        
+        const newAccessToken = response.data.token;
+        const newRefreshToken = response.data.refreshToken;
+
+        localStorage.setItem('token', newAccessToken);
+        localStorage.setItem('refreshToken', newRefreshToken);
+        setToken(newAccessToken);
+        setRefreshToken(newRefreshToken);
+        logger.info('Access token proactively refreshed successfully');
+      } catch (err) {
+        logger.error('Failed to proactively refresh token, logging out', err);
+        handleLogout();
+      }
+    }, 55000); // 55 seconds
+
+    return () => clearInterval(refreshInterval);
+  }, [token, refreshToken]);
+
   useEffect(() => {
     if (token && !user) {
       const fetchProfile = async () => {
